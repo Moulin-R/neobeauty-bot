@@ -193,17 +193,18 @@ export default function NeoBeautyConcierge() {
     try {
       const apiMessages = newMessages
         .map((m) => ({ role: m.role, content: m.content }));
-
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
-          system: SALON_KNOWLEDGE,
-          messages: apiMessages,
-        }),
-      });
+const response = await fetch("/api/chat", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    model: "claude-sonnet-4-20250514",
+    max_tokens: 1000,
+    system: SALON_KNOWLEDGE,
+    messages: apiMessages,
+  }),
+});
+     
+    
 
       const data = await response.json();
       const assistantText = data.content

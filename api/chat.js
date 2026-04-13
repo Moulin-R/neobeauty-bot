@@ -38,7 +38,7 @@ NeoBeauty internationalグループのサロンについて、お客様からの
 
 ■ ヘアメニュー（税込）：
 ・カット ¥5,500（施術時間約80分）シャンプー＋2種の本格マッサージつき
-・前髪カット ¥1,100
+・前髪カット ¥2,200
 ・眉メイク（眉カット）¥2,200（カット同時利用で半額）
 ・クイックカット ¥4,400
 ・お子様カット：幼児¥3,850 / 小学生¥3,960 / 中高校生¥4,455（シャンプーはご希望の方に）
@@ -198,7 +198,7 @@ export default async function handler(req, res) {
         "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
+        model: "claude-haiku-4-5-20241022",
         max_tokens: 1024,
         system: SALON_KNOWLEDGE,
         messages: sanitizedMessages,

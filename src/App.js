@@ -5,13 +5,27 @@ import { useState, useRef, useEffect } from "react";
 // フロントエンドにはAPIキーもプロンプトも持たせない
 // ============================================================
 
-const QUICK_QUESTIONS = [
+const ALL_QUESTIONS = [
   "メニューと料金を教えて",
   "予約するにはどうすれば？",
   "小顔矯正について知りたい",
   "まつげパーマはできる？",
   "アクセス・行き方を教えて",
   "オーナーについて教えて",
+  "カラーの料金は？",
+  "パーマの種類を教えて",
+  "トリートメントについて知りたい",
+  "メンズメニューはある？",
+  "着付けや成人式の対応は？",
+  "ヘッドスパについて教えて",
+  "縮毛矯正はできる？",
+  "お子様カットはある？",
+  "Feirteのメニューを教えて",
+  "LIALIについて教えて",
+  "アイブロウはできる？",
+  "駐車場はありますか？",
+  "営業時間を教えて",
+  "初めてでも大丈夫？",
 ];
 
 export default function NeoBeautyConcierge() {
@@ -24,6 +38,7 @@ export default function NeoBeautyConcierge() {
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [askedQuestions, setAskedQuestions] = useState([]);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -31,8 +46,19 @@ export default function NeoBeautyConcierge() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // 未質問のものから6個選ぶ
+  const getAvailableQuestions = () => {
+    const remaining = ALL_QUESTIONS.filter((q) => !askedQuestions.includes(q));
+    return remaining.slice(0, 6);
+  };
+
   const sendMessage = async (text) => {
     if (!text.trim() || loading) return;
+
+    // 質問候補から選ばれた場合、使用済みリストに追加
+    if (ALL_QUESTIONS.includes(text.trim())) {
+      setAskedQuestions((prev) => [...prev, text.trim()]);
+    }
 
     const userMsg = { role: "user", content: text.trim() };
     const newMessages = [...messages, userMsg];
@@ -101,6 +127,8 @@ export default function NeoBeautyConcierge() {
       );
     });
   };
+
+  const availableQuestions = getAvailableQuestions();
 
   return (
     <div style={{
@@ -239,8 +267,8 @@ export default function NeoBeautyConcierge() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Quick Questions */}
-      {messages.length <= 1 && (
+      {/* Quick Questions — 常に表示、質問済みのものは除外 */}
+      {availableQuestions.length > 0 && !loading && (
         <div style={{
           padding: "0 12px 8px",
           display: "flex",
@@ -248,9 +276,9 @@ export default function NeoBeautyConcierge() {
           gap: 8,
           flexShrink: 0,
         }}>
-          {QUICK_QUESTIONS.map((q, i) => (
+          {availableQuestions.map((q, i) => (
             <button
-              key={i}
+              key={q}
               onClick={() => sendMessage(q)}
               disabled={loading}
               style={{

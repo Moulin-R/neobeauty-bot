@@ -7,6 +7,7 @@ import { useState, useRef, useEffect } from "react";
 
 const ALL_QUESTIONS = [
   "メニューと料金を教えて",
+  "公式LINEを知りたい",
   "予約するにはどうすれば？",
   "小顔矯正について知りたい",
   "まつげパーマはできる？",

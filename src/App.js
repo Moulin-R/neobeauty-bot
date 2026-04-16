@@ -171,6 +171,7 @@ export default function NeoBeautyConcierge() {
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [usedQuestions, setUsedQuestions] = useState([]);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -197,13 +198,18 @@ export default function NeoBeautyConcierge() {
     setInput("");
     setLoading(true);
 
+    // クイック質問が押された場合は記録
+    if (QUICK_QUESTIONS.includes(text.trim())) {
+      setUsedQuestions((prev) => [...prev, text.trim()]);
+    }
+
     try {
       const apiMessages = newMessages.map((m) => ({
         role: m.role,
         content: m.content,
       }));
 
-      const response = await fetch("/api/chat", {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -505,8 +511,8 @@ export default function NeoBeautyConcierge() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Quick Questions */}
-      {messages.length <= 1 && (
+      {/* Quick Questions - 常に表示、押した質問は除外 */}
+      {QUICK_QUESTIONS.filter((q) => !usedQuestions.includes(q)).length > 0 && !loading && (
         <div
           style={{
             padding: "0 12px 8px",
@@ -516,7 +522,7 @@ export default function NeoBeautyConcierge() {
             flexShrink: 0,
           }}
         >
-          {QUICK_QUESTIONS.map((q, i) => (
+          {QUICK_QUESTIONS.filter((q) => !usedQuestions.includes(q)).map((q, i) => (
             <button
               key={i}
               onClick={() => sendMessage(q)}

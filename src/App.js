@@ -19,7 +19,7 @@ NeoBeauty internationalグループのサロンについて、お客様からの
 ■ TEL：047-324-4976
 ■ アクセス：JR市川駅北口 徒歩3分 / 京成市川真間駅 徒歩6分
 ■ 創業：1997年（since 1997）
-■ 予約：【おすすめ】24時間ネット予約 https://1cs.jp/mr/x （電話は施術中で出られないことがあるため、ネット予約が確実でおすすめです）/ 電話 047-324-4976
+■ 予約：【おすすめ】24時間ネット予約 https://1cs.jp/mr/x（電話は施術中で出られないことがあるため、ネット予約が確実でおすすめです）/ 電話 047-324-4976
 ※早朝予約など、24時間ネット予約で対応できないメニューの場合は、事前のお電話予約もしくは直接サロンにてご予約を承ります。
 ■ Web：http://www.moulin-r.com
 ■ SNS：Instagram @moulin_r_official / Facebook / Twitter
@@ -77,8 +77,6 @@ NeoBeauty internationalグループのサロンについて、お客様からの
 ・成人式コース（振袖着付け＋スタイリング）¥20,900
 ※早朝受付あり（営業前30分ごとに¥550追加）
 
-
-
 【直接運営サロン②】salon de Feirte（サロンドフェリテ）
 ━━━━━━━━━━━━━━━━━━━━
 ■ 業態：小顔矯正・リフトアップ専門エステサロン
@@ -90,7 +88,6 @@ NeoBeauty internationalグループのサロンについて、お客様からの
 ■ 予約：電話、お問い合わせフォーム（http://ferite.jp/contact/）、LINE予約（http://lin.ee/qcUB3mN）
 ■ Web：http://ferite.jp/
 ■ オーナー：齋藤裕子（エステ歴30年・CIDESCO国際エステティシャン・日本エステティック協会認定指導講師）
-サロンでの施術のほか、美と健康のダイエット指導をご希望のお客様に行っています。また、全国の個人事業のエステサロン様向けに、Webを活用した運営サポート・指導も行っています。
 
 ■ コンセプト：
 「健康的な美しさで上向きな人生を」「お客様の365日のキレイ」を全力で応援。
@@ -136,7 +133,6 @@ NeoBeauty internationalグループのサロンについて、お客様からの
 ・アイブロウスタイリング ¥4,000〜
 ・まつげパーマ＆アイブロウセット ¥7,980〜
 ■ オーナー：yuuki（アイリスト歴10年以上）
-お客様の目元を素敵に仕上げることに喜びと魅力を感じています。ご来店されるすべてのお客様に幸せな気持ちになっていただけるよう、居心地のよい空間づくりを大切にしています。
 
 【応対ルール】
 1. 常に丁寧で温かみのある接客トーンで応対してください。
@@ -149,11 +145,11 @@ NeoBeauty internationalグループのサロンについて、お客様からの
 8. 挨拶や雑談にも感じよく対応してください。
 9. 回答は簡潔にまとめ、長くなりすぎないようにしてください。
 10. 絵文字を適度に使って親しみやすい雰囲気を出してください。
-11. 予約URLやサイトURLを案内する際は、必ずhttps://やhttp://から始まる完全なURLをそのまま表示してください（お客様がタップ・クリックできるようにするため）。
+11. 予約URLやサイトURLを案内する際は、必ずhttps://やhttp://から始まる完全なURLをそのまま表示してください。
 12. あなたの名前を聞かれたら「NeoBeauty international AIコンシェルジュ」と答えてください。
 13. ネイルについて聞かれた場合は、「現在Moulin-Rではネイルサロンの営業は行っておりません。マツエク・まつ毛パーマでしたら、店内のシェアサロンLIALI（リアリ）をご案内できます」と丁寧にお伝えしてください。
-14. エステ（フェイシャル・ボディ・脱毛・ブライダルエステ・小顔矯正など）について聞かれた場合は、Moulin-Rではなくグループのエステ専門サロン「salon de Feirte（サロンドフェリテ）」をご案内してください。Moulin-Rにエステがあるとは案内しないでください。
-15. オーナー・代表・齋藤さんについて聞かれた場合は、齋藤栄一朗のプロフィールを紹介してください。Moulin-Rのオーナースタイリストであること、NeoBeauty international代表であることを中心に、AIスクールNEO主宰や電子書籍出版（未来デジタル出版）など多方面で活躍していることを温かく紹介してください。
+14. エステについて聞かれた場合は、Moulin-Rではなくグループのエステ専門サロン「salon de Feirte（サロンドフェリテ）」をご案内してください。
+15. オーナー・代表・齋藤さんについて聞かれた場合は、齋藤栄一朗のプロフィールを紹介してください。
 `;
 
 const QUICK_QUESTIONS = [
@@ -179,6 +175,17 @@ export default function NeoBeautyConcierge() {
   const inputRef = useRef(null);
 
   useEffect(() => {
+    const lastMsg = messages[messages.length - 1];
+    if (lastMsg?.role === "assistant") {
+      // AIの回答の場合、最後のアシスタント吹き出しの先頭を画面トップに
+      const assistantBubbles = document.querySelectorAll('[data-role="assistant-bubble"]');
+      const lastBubble = assistantBubbles[assistantBubbles.length - 1];
+      if (lastBubble) {
+        lastBubble.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
+    }
+    // ユーザーのメッセージやローディング時は一番下にスクロール
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
@@ -191,8 +198,10 @@ export default function NeoBeautyConcierge() {
     setLoading(true);
 
     try {
-      const apiMessages = newMessages
-        .map((m) => ({ role: m.role, content: m.content }));
+      const apiMessages = newMessages.map((m) => ({
+        role: m.role,
+        content: m.content,
+      }));
 
       const response = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
@@ -206,12 +215,16 @@ export default function NeoBeautyConcierge() {
       });
 
       const data = await response.json();
-      const assistantText = data.content
-        ?.filter((b) => b.type === "text")
-        .map((b) => b.text)
-        .join("\n") || "申し訳ございません。もう一度お試しください。";
+      const assistantText =
+        data.content
+          ?.filter((b) => b.type === "text")
+          .map((b) => b.text)
+          .join("\n") || "申し訳ございません。もう一度お試しください。";
 
-      setMessages((prev) => [...prev, { role: "assistant", content: assistantText }]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: assistantText },
+      ]);
     } catch (err) {
       setMessages((prev) => [
         ...prev,
@@ -227,158 +240,263 @@ export default function NeoBeautyConcierge() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     sendMessage(input);
   };
 
   const formatMessage = (text) => {
     const urlRegex = /(https?:\/\/[^\s）\)]+)/g;
-    return text.split("\n").map((line, i) => {
+    return text.split("\n").map((line, i, arr) => {
       const parts = line.split(urlRegex);
       return (
         <span key={i}>
-          {parts.map((part, j) =>
-            urlRegex.test(part) ? (
-              <a key={j} href={part} target="_blank" rel="noopener noreferrer" style={{
-                color: "#b8944d", textDecoration: "underline", wordBreak: "break-all",
-              }}>{part}</a>
-            ) : ( part )
-          )}
-          {i < text.split("\n").length - 1 && <br />}
+          {parts.map((part, j) => {
+            if (urlRegex.test(part)) {
+              urlRegex.lastIndex = 0;
+              return (
+                <a
+                  key={j}
+                  href={part}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: "#b8944d",
+                    textDecoration: "underline",
+                    wordBreak: "break-all",
+                  }}
+                >
+                  {part}
+                </a>
+              );
+            }
+            urlRegex.lastIndex = 0;
+            return part;
+          })}
+          {i < arr.length - 1 && <br />}
         </span>
       );
     });
   };
 
   return (
-    <div style={{
-      width: "100%",
-      height: "100vh",
-      display: "flex",
-      flexDirection: "column",
-      background: "linear-gradient(180deg, #fdf6f0 0%, #fef9f5 40%, #f8f0ea 100%)",
-      fontFamily: "'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif",
-      overflow: "hidden",
-    }}>
-      <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+    <div
+      style={{
+        width: "100%",
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        background:
+          "linear-gradient(180deg, #fdf6f0 0%, #fef9f5 40%, #f8f0ea 100%)",
+        fontFamily:
+          "'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif",
+        overflow: "hidden",
+      }}
+    >
+      <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet"
+      />
 
       {/* Header */}
-      <div style={{
-        background: "linear-gradient(135deg, #2d2926 0%, #4a3f3a 50%, #2d2926 100%)",
-        padding: "16px 20px",
-        display: "flex",
-        alignItems: "center",
-        gap: "14px",
-        boxShadow: "0 4px 20px rgba(45,41,38,0.15)",
-        position: "relative",
-        overflow: "hidden",
-        flexShrink: 0,
-      }}>
-        <div style={{
-          position: "absolute",
-          top: 0, left: 0, right: 0, bottom: 0,
-          background: "repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.02) 20px, rgba(255,255,255,0.02) 40px)",
-        }} />
-        <div style={{
-          width: 48, height: 48,
-          borderRadius: "50%",
-          background: "linear-gradient(135deg, #c9a96e 0%, #e8d5a3 50%, #c9a96e 100%)",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          boxShadow: "0 2px 12px rgba(201,169,110,0.4)",
-          flexShrink: 0,
+      <div
+        style={{
+          background:
+            "linear-gradient(135deg, #2d2926 0%, #4a3f3a 50%, #2d2926 100%)",
+          padding: "16px 20px",
+          display: "flex",
+          alignItems: "center",
+          gap: "14px",
+          boxShadow: "0 4px 20px rgba(45,41,38,0.15)",
           position: "relative",
-          zIndex: 1,
-        }}>
-          <span style={{ fontSize: 20, fontWeight: 700, color: "#2d2926", fontFamily: "Cormorant Garamond, serif" }}>NB</span>
+          overflow: "hidden",
+          flexShrink: 0,
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background:
+              "repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.02) 20px, rgba(255,255,255,0.02) 40px)",
+          }}
+        />
+        <div
+          style={{
+            width: 48,
+            height: 48,
+            borderRadius: "50%",
+            background:
+              "linear-gradient(135deg, #c9a96e 0%, #e8d5a3 50%, #c9a96e 100%)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: "0 2px 12px rgba(201,169,110,0.4)",
+            flexShrink: 0,
+            position: "relative",
+            zIndex: 1,
+          }}
+        >
+          <span
+            style={{
+              fontSize: 20,
+              fontWeight: 700,
+              color: "#2d2926",
+              fontFamily: "Cormorant Garamond, serif",
+            }}
+          >
+            NB
+          </span>
         </div>
         <div style={{ position: "relative", zIndex: 1 }}>
-          <div style={{
-            fontFamily: "Cormorant Garamond, serif",
-            fontSize: 18, fontWeight: 600, color: "#e8d5a3",
-            letterSpacing: "0.08em",
-            lineHeight: 1.2,
-          }}>NeoBeauty international</div>
-          <div style={{
-            fontSize: 11, color: "rgba(232,213,163,0.7)",
-            letterSpacing: "0.15em",
-            marginTop: 2,
-            fontWeight: 300,
-          }}>AI コンシェルジュ ✦ 美と健康のトータルプロデュース</div>
+          <div
+            style={{
+              fontFamily: "Cormorant Garamond, serif",
+              fontSize: 18,
+              fontWeight: 600,
+              color: "#e8d5a3",
+              letterSpacing: "0.08em",
+              lineHeight: 1.2,
+            }}
+          >
+            NeoBeauty international
+          </div>
+          <div
+            style={{
+              fontSize: 11,
+              color: "rgba(232,213,163,0.7)",
+              letterSpacing: "0.15em",
+              marginTop: 2,
+              fontWeight: 300,
+            }}
+          >
+            AI コンシェルジュ ✦ 美と健康のトータルプロデュース
+          </div>
         </div>
       </div>
 
       {/* Messages */}
-      <div style={{
-        flex: 1,
-        overflowY: "auto",
-        padding: "16px 12px",
-        display: "flex",
-        flexDirection: "column",
-        gap: 12,
-      }}>
+      <div
+        style={{
+          flex: 1,
+          overflowY: "auto",
+          padding: "16px 12px",
+          display: "flex",
+          flexDirection: "column",
+          gap: 12,
+        }}
+      >
         {messages.map((msg, i) => (
-          <div key={i} style={{
-            display: "flex",
-            justifyContent: msg.role === "user" ? "flex-end" : "flex-start",
-            alignItems: "flex-end",
-            gap: 8,
-            animation: "fadeSlideIn 0.3s ease-out",
-          }}>
+          <div
+            key={i}
+            data-role={msg.role === "assistant" ? "assistant-bubble" : "user-bubble"}
+            style={{
+              display: "flex",
+              justifyContent:
+                msg.role === "user" ? "flex-end" : "flex-start",
+              alignItems: "flex-start",
+              gap: 8,
+              animation: "fadeSlideIn 0.3s ease-out",
+              scrollMarginTop: "16px",
+            }}
+          >
             {msg.role === "assistant" && (
-              <div style={{
-                width: 32, height: 32,
-                borderRadius: "50%",
-                background: "linear-gradient(135deg, #c9a96e, #e8d5a3)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                flexShrink: 0,
-                fontSize: 12, fontWeight: 700, color: "#2d2926",
-                fontFamily: "Cormorant Garamond, serif",
-                boxShadow: "0 2px 8px rgba(201,169,110,0.3)",
-              }}>NB</div>
+              <div
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: "50%",
+                  background:
+                    "linear-gradient(135deg, #c9a96e, #e8d5a3)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                  fontSize: 12,
+                  fontWeight: 700,
+                  color: "#2d2926",
+                  fontFamily: "Cormorant Garamond, serif",
+                  boxShadow: "0 2px 8px rgba(201,169,110,0.3)",
+                }}
+              >
+                NB
+              </div>
             )}
-            <div style={{
-              maxWidth: "78%",
-              padding: "12px 16px",
-              borderRadius: msg.role === "user" ? "18px 18px 4px 18px" : "18px 18px 18px 4px",
-              background: msg.role === "user"
-                ? "linear-gradient(135deg, #4a3f3a 0%, #2d2926 100%)"
-                : "#ffffff",
-              color: msg.role === "user" ? "#f5f0eb" : "#3d3532",
-              fontSize: 14,
-              lineHeight: 1.7,
-              fontWeight: 400,
-              boxShadow: msg.role === "user"
-                ? "0 2px 12px rgba(45,41,38,0.2)"
-                : "0 2px 12px rgba(0,0,0,0.06), 0 0 0 1px rgba(201,169,110,0.1)",
-              letterSpacing: "0.02em",
-            }}>
+            <div
+              style={{
+                maxWidth: "78%",
+                padding: "12px 16px",
+                borderRadius:
+                  msg.role === "user"
+                    ? "18px 18px 4px 18px"
+                    : "18px 18px 18px 4px",
+                background:
+                  msg.role === "user"
+                    ? "linear-gradient(135deg, #4a3f3a 0%, #2d2926 100%)"
+                    : "#ffffff",
+                color: msg.role === "user" ? "#f5f0eb" : "#3d3532",
+                fontSize: 14,
+                lineHeight: 1.7,
+                fontWeight: 400,
+                boxShadow:
+                  msg.role === "user"
+                    ? "0 2px 12px rgba(45,41,38,0.2)"
+                    : "0 2px 12px rgba(0,0,0,0.06), 0 0 0 1px rgba(201,169,110,0.1)",
+                letterSpacing: "0.02em",
+              }}
+            >
               {formatMessage(msg.content)}
             </div>
           </div>
         ))}
 
         {loading && (
-          <div style={{ display: "flex", alignItems: "flex-end", gap: 8 }}>
-            <div style={{
-              width: 32, height: 32, borderRadius: "50%",
-              background: "linear-gradient(135deg, #c9a96e, #e8d5a3)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              flexShrink: 0, fontSize: 12, fontWeight: 700, color: "#2d2926",
-              fontFamily: "Cormorant Garamond, serif",
-            }}>NB</div>
-            <div style={{
-              padding: "14px 20px",
-              borderRadius: "18px 18px 18px 4px",
-              background: "#fff",
-              boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
-              display: "flex", gap: 6, alignItems: "center",
-            }}>
+          <div
+            style={{ display: "flex", alignItems: "flex-start", gap: 8 }}
+          >
+            <div
+              style={{
+                width: 32,
+                height: 32,
+                borderRadius: "50%",
+                background:
+                  "linear-gradient(135deg, #c9a96e, #e8d5a3)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+                fontSize: 12,
+                fontWeight: 700,
+                color: "#2d2926",
+                fontFamily: "Cormorant Garamond, serif",
+              }}
+            >
+              NB
+            </div>
+            <div
+              style={{
+                padding: "14px 20px",
+                borderRadius: "18px 18px 18px 4px",
+                background: "#fff",
+                boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+                display: "flex",
+                gap: 6,
+                alignItems: "center",
+              }}
+            >
               {[0, 1, 2].map((j) => (
-                <div key={j} style={{
-                  width: 8, height: 8, borderRadius: "50%",
-                  background: "#c9a96e",
-                  animation: `bounce 1.2s ease-in-out ${j * 0.15}s infinite`,
-                }} />
+                <div
+                  key={j}
+                  style={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: "50%",
+                    background: "#c9a96e",
+                    animation: `bounce 1.2s ease-in-out ${j * 0.15}s infinite`,
+                  }}
+                />
               ))}
             </div>
           </div>
@@ -389,13 +507,15 @@ export default function NeoBeautyConcierge() {
 
       {/* Quick Questions */}
       {messages.length <= 1 && (
-        <div style={{
-          padding: "0 12px 8px",
-          display: "flex",
-          flexWrap: "wrap",
-          gap: 8,
-          flexShrink: 0,
-        }}>
+        <div
+          style={{
+            padding: "0 12px 8px",
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 8,
+            flexShrink: 0,
+          }}
+        >
           {QUICK_QUESTIONS.map((q, i) => (
             <button
               key={i}
@@ -416,7 +536,8 @@ export default function NeoBeautyConcierge() {
                 letterSpacing: "0.03em",
               }}
               onMouseEnter={(e) => {
-                e.target.style.background = "linear-gradient(135deg, #c9a96e, #e8d5a3)";
+                e.target.style.background =
+                  "linear-gradient(135deg, #c9a96e, #e8d5a3)";
                 e.target.style.color = "#2d2926";
                 e.target.style.borderColor = "#c9a96e";
                 e.target.style.transform = "translateY(-1px)";
@@ -435,37 +556,46 @@ export default function NeoBeautyConcierge() {
       )}
 
       {/* Input */}
-      <div style={{
-        padding: "12px 12px 16px",
-        background: "rgba(255,255,255,0.6)",
-        backdropFilter: "blur(12px)",
-        borderTop: "1px solid rgba(201,169,110,0.15)",
-        flexShrink: 0,
-      }}>
-        <div style={{
-          display: "flex",
-          gap: 10,
-          alignItems: "flex-end",
-          maxWidth: 680,
-          margin: "0 auto",
-        }}>
-          <div style={{
-            flex: 1,
-            background: "#fff",
-            borderRadius: 24,
-            border: "1px solid rgba(201,169,110,0.25)",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+      <div
+        style={{
+          padding: "12px 12px 16px",
+          background: "rgba(255,255,255,0.6)",
+          backdropFilter: "blur(12px)",
+          borderTop: "1px solid rgba(201,169,110,0.15)",
+          flexShrink: 0,
+        }}
+      >
+        <div
+          style={{
             display: "flex",
-            alignItems: "center",
-            padding: "0 4px 0 16px",
-            transition: "border-color 0.2s, box-shadow 0.2s",
-          }}>
+            gap: 10,
+            alignItems: "flex-end",
+            maxWidth: 680,
+            margin: "0 auto",
+          }}
+        >
+          <div
+            style={{
+              flex: 1,
+              background: "#fff",
+              borderRadius: 24,
+              border: "1px solid rgba(201,169,110,0.25)",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+              display: "flex",
+              alignItems: "center",
+              padding: "0 4px 0 16px",
+              transition: "border-color 0.2s, box-shadow 0.2s",
+            }}
+          >
             <input
               ref={inputRef}
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => { if (e.key === "Enter" && !e.nativeEvent.isComposing) handleSubmit(e); }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.nativeEvent.isComposing)
+                  handleSubmit(e);
+              }}
               placeholder="ご質問をどうぞ..."
               disabled={loading}
               style={{
@@ -484,33 +614,50 @@ export default function NeoBeautyConcierge() {
               onClick={handleSubmit}
               disabled={!input.trim() || loading}
               style={{
-                width: 38, height: 38,
+                width: 38,
+                height: 38,
                 borderRadius: "50%",
                 border: "none",
-                background: input.trim() && !loading
-                  ? "linear-gradient(135deg, #c9a96e, #b8944d)"
-                  : "#e0d8d0",
-                color: input.trim() && !loading ? "#fff" : "#b5a99e",
-                cursor: input.trim() && !loading ? "pointer" : "default",
-                display: "flex", alignItems: "center", justifyContent: "center",
+                background:
+                  input.trim() && !loading
+                    ? "linear-gradient(135deg, #c9a96e, #b8944d)"
+                    : "#e0d8d0",
+                color:
+                  input.trim() && !loading ? "#fff" : "#b5a99e",
+                cursor:
+                  input.trim() && !loading ? "pointer" : "default",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
                 transition: "all 0.2s",
                 flexShrink: 0,
               }}
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <line x1="22" y1="2" x2="11" y2="13" />
                 <polygon points="22 2 15 22 11 13 2 9 22 2" />
               </svg>
             </button>
           </div>
         </div>
-        <div style={{
-          textAlign: "center",
-          fontSize: 10,
-          color: "#b5a99e",
-          marginTop: 8,
-          letterSpacing: "0.05em",
-        }}>
+        <div
+          style={{
+            textAlign: "center",
+            fontSize: 10,
+            color: "#b5a99e",
+            marginTop: 8,
+            letterSpacing: "0.05em",
+          }}
+        >
           NeoBeauty international AIコンシェルジュ — 美と健康のトータルプロデュース
         </div>
       </div>

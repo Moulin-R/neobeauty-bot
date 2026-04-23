@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 
 const SALON_KNOWLEDGE = `
 あなたは「NeoBeauty international AIコンシェルジュ」です。
@@ -163,16 +163,11 @@ NeoBeauty internationalグループのサロンについて、お客様からの
 13. ネイルについて聞かれた場合は、「現在Moulin-Rではネイルサロンの営業は行っておりません。マツエク・まつ毛パーマでしたら、店内のシェアサロンLIALI（リアリ）をご案内できます」と丁寧にお伝えしてください。
 14. エステについて聞かれた場合は、Moulin-Rではなくグループのエステ専門サロン「salon de Feirte（サロンドフェリテ）」をご案内してください。
 15. オーナー・代表・齋藤さん・齋藤栄一朗について聞かれた場合は、齋藤栄一朗のプロフィールを紹介してください。その際、活動内容（サロン経営、AIスクールNEO、未来デジタル出版、OneStep）に加え、必ず著書（すべてAmazon Kindle出版）も自然な流れでご紹介してください。
- 例：「代表の齋藤栄一朗は、美容師としての長年のキャリアに加え、AIスクールNEOの主宰や電子書籍出版事業も手がけております📚 『薄毛は生活習慣で変えられる！』『美容室×AI』『AI作曲SUNO完全ガイド』『セールスファネル完全解説ブック』など、Amazon Kindleにて著書も出版しております✨」
 16. Feirteのオーナー・齋藤裕子さんについて聞かれた場合は、プロフィールを紹介する際に、エステティシャンとしてのキャリア・講習会活動に加え、必ず著書（すべてAmazon Kindle出版）も自然な流れでご紹介してください。
- 例：「Feirteオーナーの齋藤裕子は、エステ歴30年のCIDESCO国際エステティシャンで、全国の美容専門家への講習会も開催しております✨ また『スル痩せダイエット』シリーズ（50代から始める！無理なく健康的に痩せるための楽しいガイド・栄養講座①②）や『知らないと損するダイエットのヒント60』など、Amazon Kindleにて著書も出版しております📚」
-17. 本・著書・出版・Kindleなど書籍そのものに関する質問があった場合は、以下のように案内してください：
- ・齋藤栄一朗（代表）の著書は、美容業界向け・AI活用・マーケティング関連の書籍で、すべてAmazon Kindleにて出版されています。
- ・齋藤裕子（Feirteオーナー）の著書は、ダイエット・健康関連の書籍で、すべてAmazon Kindleにて出版されています。
- ・書籍名を具体的にお伝えし、「Amazon Kindleストアで『齋藤栄一朗』または『齋藤裕子』とご検索いただくとご覧いただけます📚」とご案内してください。
- ・どなたの著書に関心があるか不明な場合は、「代表・齋藤栄一朗の著書と、Feirteオーナー・齋藤裕子の著書、どちらにご関心がおありですか？」と優しくお尋ねしてください。
- ・特定ジャンル（薄毛、AI、ダイエット等）に関するご相談には、関連する著書をさりげなくご紹介いただいて構いません。押し売りにならないよう、あくまで「ご参考までに」のトーンでお伝えください。
+17. 本・著書・出版・Kindleなど書籍そのものに関する質問があった場合は、書籍名を具体的にお伝えし、「Amazon Kindleストアで『齋藤栄一朗』または『齋藤裕子』とご検索いただくとご覧いただけます📚」とご案内してください。
 `;
+
+const CONCIERGE_IMAGES = ["/concierge1.png", "/concierge2.png"];
 
 const QUICK_QUESTIONS = [
   "メニューと料金を教えて",
@@ -182,6 +177,30 @@ const QUICK_QUESTIONS = [
   "アクセス・行き方を教えて",
   "オーナーについて教えて",
 ];
+
+// メッセージごとにランダム画像を決定するコンポーネント
+function ConciergeAvatar({ messageIndex }) {
+  const imageUrl = useMemo(() => {
+    return CONCIERGE_IMAGES[messageIndex % CONCIERGE_IMAGES.length];
+  }, [messageIndex]);
+
+  return (
+    <img
+      src={imageUrl}
+      alt="コンシェルジュ"
+      style={{
+        width: 40,
+        height: 40,
+        borderRadius: "50%",
+        objectFit: "cover",
+        objectPosition: "top",
+        flexShrink: 0,
+        boxShadow: "0 2px 8px rgba(201,169,110,0.3)",
+        border: "2px solid rgba(201,169,110,0.4)",
+      }}
+    />
+  );
+}
 
 export default function NeoBeautyConcierge() {
   const [messages, setMessages] = useState([
@@ -196,6 +215,11 @@ export default function NeoBeautyConcierge() {
   const [usedQuestions, setUsedQuestions] = useState([]);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+
+  // メッセージごとのランダム画像インデックスを記録
+  const [imageIndices, setImageIndices] = useState([
+    Math.floor(Math.random() * CONCIERGE_IMAGES.length),
+  ]);
 
   useEffect(() => {
     const lastMsg = messages[messages.length - 1];
@@ -250,6 +274,11 @@ export default function NeoBeautyConcierge() {
         ...prev,
         { role: "assistant", content: assistantText },
       ]);
+      // 新しいAI回答にランダム画像インデックスを追加
+      setImageIndices((prev) => [
+        ...prev,
+        Math.floor(Math.random() * CONCIERGE_IMAGES.length),
+      ]);
     } catch (err) {
       setMessages((prev) => [
         ...prev,
@@ -259,6 +288,10 @@ export default function NeoBeautyConcierge() {
             "申し訳ございません、接続に問題が発生しました。\n\nお急ぎの場合はこちらからどうぞ📞\n・Moulin-R ネット予約：https://1cs.jp/mr/x\n・Feirte：080-4861-3110",
         },
       ]);
+      setImageIndices((prev) => [
+        ...prev,
+        Math.floor(Math.random() * CONCIERGE_IMAGES.length),
+      ]);
     } finally {
       setLoading(false);
     }
@@ -267,6 +300,15 @@ export default function NeoBeautyConcierge() {
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
     sendMessage(input);
+  };
+
+  // assistantメッセージだけのカウンターを取得
+  const getAssistantIndex = (messageIndex) => {
+    let count = 0;
+    for (let k = 0; k < messageIndex; k++) {
+      if (messages[k].role === "assistant") count++;
+    }
+    return count;
   };
 
   const formatMessage = (text) => {
@@ -322,7 +364,7 @@ export default function NeoBeautyConcierge() {
         rel="stylesheet"
       />
 
-      {/* Header */}
+      {/* Header - NBアイコンはそのまま */}
       <div
         style={{
           background:
@@ -428,26 +470,7 @@ export default function NeoBeautyConcierge() {
             }}
           >
             {msg.role === "assistant" && (
-              <div
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: "50%",
-                  background:
-                    "linear-gradient(135deg, #c9a96e, #e8d5a3)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0,
-                  fontSize: 12,
-                  fontWeight: 700,
-                  color: "#2d2926",
-                  fontFamily: "Cormorant Garamond, serif",
-                  boxShadow: "0 2px 8px rgba(201,169,110,0.3)",
-                }}
-              >
-                NB
-              </div>
+              <ConciergeAvatar messageIndex={imageIndices[getAssistantIndex(i)] || 0} />
             )}
             <div
               style={{
@@ -481,25 +504,7 @@ export default function NeoBeautyConcierge() {
           <div
             style={{ display: "flex", alignItems: "flex-start", gap: 8 }}
           >
-            <div
-              style={{
-                width: 32,
-                height: 32,
-                borderRadius: "50%",
-                background:
-                  "linear-gradient(135deg, #c9a96e, #e8d5a3)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-                fontSize: 12,
-                fontWeight: 700,
-                color: "#2d2926",
-                fontFamily: "Cormorant Garamond, serif",
-              }}
-            >
-              NB
-            </div>
+            <ConciergeAvatar messageIndex={Math.floor(Math.random() * CONCIERGE_IMAGES.length)} />
             <div
               style={{
                 padding: "14px 20px",

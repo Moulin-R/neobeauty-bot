@@ -169,7 +169,7 @@ export default function NeoBeautyConcierge() {
           position: "relative",
           zIndex: 1,
         }}>
-          <span style={{ fontSize: 20, fontWeight: 700, color: "#2d2926", fontFamily: "Cormorant Garamond, serif" }}>NB</span>
+          <span translate="no" style={{ fontSize: 20, fontWeight: 700, color: "#2d2926", fontFamily: "Cormorant Garamond, serif" }}>NB</span>
         </div>
         <div style={{ position: "relative", zIndex: 1 }}>
           <div style={{
@@ -214,7 +214,7 @@ export default function NeoBeautyConcierge() {
                 fontSize: 12, fontWeight: 700, color: "#2d2926",
                 fontFamily: "Cormorant Garamond, serif",
                 boxShadow: "0 2px 8px rgba(201,169,110,0.3)",
-              }}>NB</div>
+              }}><span translate="no">NB</span></div>
             )}
             <div style={{
               maxWidth: "78%",
@@ -245,7 +245,7 @@ export default function NeoBeautyConcierge() {
               display: "flex", alignItems: "center", justifyContent: "center",
               flexShrink: 0, fontSize: 12, fontWeight: 700, color: "#2d2926",
               fontFamily: "Cormorant Garamond, serif",
-            }}>NB</div>
+            }}><span translate="no">NB</span></div>
             <div style={{
               padding: "14px 20px",
               borderRadius: "18px 18px 18px 4px",

@@ -28,10 +28,18 @@ const ALL_QUESTIONS = [
   "初めてでも大丈夫？",
 ];
 
+const CONCIERGE_AVATARS = [
+  "/concierge1.png",
+  "/concierge2.png",
+];
+
+const getRandomAvatar = () => CONCIERGE_AVATARS[Math.floor(Math.random() * CONCIERGE_AVATARS.length)];
+
 export default function NeoBeautyConcierge() {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
+      avatar: CONCIERGE_AVATARS[0],
       content:
         "こんにちは✨\n「NeoBeauty international AIコンシェルジュ」です！\n\nMoulin-R（ムーランアール）、salon de Feirte（サロンドフェリテ）、LIALI（リアリ）に関するご質問に何でもお答えします💫\n\nメニュー・料金・ご予約方法・お悩み相談など、お気軽にどうぞ！",
     },
@@ -88,13 +96,14 @@ export default function NeoBeautyConcierge() {
         .map((b) => b.text)
         .join("\n") || "申し訳ございません。もう一度お試しください。";
 
-      setMessages((prev) => [...prev, { role: "assistant", content: assistantText }]);
+      setMessages((prev) => [...prev, { role: "assistant", avatar: getRandomAvatar(), content: assistantText }]);
     } catch (err) {
       console.error("Chat error:", err);
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
+          avatar: getRandomAvatar(),
           content:
             "申し訳ございません、接続に問題が発生しました。\n\nお急ぎの場合はこちらからどうぞ📞\n・Moulin-R ネット予約：https://1cs.jp/mr/x\n・Feirte：080-4861-3110",
         },
@@ -200,21 +209,23 @@ export default function NeoBeautyConcierge() {
           <div key={i} style={{
             display: "flex",
             justifyContent: msg.role === "user" ? "flex-end" : "flex-start",
-            alignItems: "flex-end",
+            alignItems: "flex-start",
             gap: 8,
             animation: "fadeSlideIn 0.3s ease-out",
           }}>
             {msg.role === "assistant" && (
-              <div style={{
-                width: 32, height: 32,
-                borderRadius: "50%",
-                background: "linear-gradient(135deg, #c9a96e, #e8d5a3)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                flexShrink: 0,
-                fontSize: 12, fontWeight: 700, color: "#2d2926",
-                fontFamily: "Cormorant Garamond, serif",
-                boxShadow: "0 2px 8px rgba(201,169,110,0.3)",
-              }}><span translate="no">NB</span></div>
+              <img
+                src={msg.avatar || CONCIERGE_AVATARS[0]}
+                alt="コンシェルジュ"
+                style={{
+                  width: 36, height: 36,
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  flexShrink: 0,
+                  boxShadow: "0 2px 8px rgba(201,169,110,0.3)",
+                  border: "2px solid rgba(201,169,110,0.4)",
+                }}
+              />
             )}
             <div style={{
               maxWidth: "78%",
@@ -238,14 +249,19 @@ export default function NeoBeautyConcierge() {
         ))}
 
         {loading && (
-          <div style={{ display: "flex", alignItems: "flex-end", gap: 8 }}>
-            <div style={{
-              width: 32, height: 32, borderRadius: "50%",
-              background: "linear-gradient(135deg, #c9a96e, #e8d5a3)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              flexShrink: 0, fontSize: 12, fontWeight: 700, color: "#2d2926",
-              fontFamily: "Cormorant Garamond, serif",
-            }}><span translate="no">NB</span></div>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+            <img
+              src={getRandomAvatar()}
+              alt="コンシェルジュ"
+              style={{
+                width: 36, height: 36,
+                borderRadius: "50%",
+                objectFit: "cover",
+                flexShrink: 0,
+                boxShadow: "0 2px 8px rgba(201,169,110,0.3)",
+                border: "2px solid rgba(201,169,110,0.4)",
+              }}
+            />
             <div style={{
               padding: "14px 20px",
               borderRadius: "18px 18px 18px 4px",

@@ -234,8 +234,8 @@ export default function NeoBeautyConcierge() {
               background: msg.role === "user"
                 ? "linear-gradient(135deg, #4a3f3a 0%, #2d2926 100%)"
                 : "#ffffff",
-              color: msg.role === "user" ? "#f5f0eb" : "#3d3532",
-              fontSize: 14,
+              color: msg.role === "user" ? "#f5f0eb" : "#1a1614",
+              fontSize: 15.5,
               lineHeight: 1.7,
               fontWeight: 400,
               boxShadow: msg.role === "user"
@@ -383,8 +383,8 @@ export default function NeoBeautyConcierge() {
                 flex: 1,
                 border: "none",
                 outline: "none",
-                fontSize: 14,
-                color: "#3d3532",
+                fontSize: 15.5,
+                color: "#1a1614",
                 background: "transparent",
                 padding: "12px 0",
                 fontFamily: "inherit",

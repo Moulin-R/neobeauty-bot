@@ -48,10 +48,13 @@ export default function NeoBeautyConcierge() {
   const [loading, setLoading] = useState(false);
   const [askedQuestions, setAskedQuestions] = useState([]);
   const messagesEndRef = useRef(null);
+  const lastMessageRef = useRef(null);
   const inputRef = useRef(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   }, [messages]);
 
   // 未質問のものから6個選ぶ
@@ -206,7 +209,7 @@ export default function NeoBeautyConcierge() {
         gap: 12,
       }}>
         {messages.map((msg, i) => (
-          <div key={i} style={{
+          <div key={i} ref={i === messages.length - 1 ? lastMessageRef : null} style={{
             display: "flex",
             justifyContent: msg.role === "user" ? "flex-end" : "flex-start",
             alignItems: "flex-start",
